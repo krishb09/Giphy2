@@ -1,0 +1,14 @@
+button,
+div,
+form,
+input {
+  margin: 10px;
+}
+
+header{
+    background-color: lightblue; 
+}
+
+.container{
+    background-color: lightyellow; 
+}
