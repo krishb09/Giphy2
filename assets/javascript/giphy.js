@@ -17,27 +17,27 @@ $("#buttons-view").on("click", ".gif-btn", function(){
     for(var i=0; i < response.data.length; i++){
       console.log(response.data[i]);
       // console.log(response.data[i].title); 
-      console.log(response.data[i].images.original.url);
-      console.log(response.data[i].images.original_still.url);
+      // console.log(response.data[i].images.original.url);
+      // console.log(response.data[i].images.original_still.url);
 
-      
-      var imageUrl = response.data[i].images.original.url
-
-      // var stillUrl = response.data[i].images.original_still.url
-
-      var showImage = $("<img>"); 
+      var mainDiv = $("<div class= 'main'>");  
       var showP = $("<p>"); 
-      showP.text(response.data[i].rating); 
-      showImage.append(showP); 
+      var rating = response.data[i].rating
+      showP.text("Rating: "+ rating); 
+      mainDiv.append(showP); 
+
+      var showImage = $("<img>");
+      var imageUrl = response.data[i].images.original.url
+      var stillUrl = response.data[i].images.original_still.url
+
       showImage.addClass(".gif"); 
-      showImage.attr("data-state", "animate"); 
-      showImage.attr("src", imageUrl); 
+      showImage.attr("src", stillUrl); 
+      showImage.attr("data-animate", imageUrl); 
+      showImage.attr("data-still", stillUrl); 
       showImage.attr("alt", "show image"); 
-      $("#gifs-view").prepend(showImage);
 
-
-
-
+      mainDiv.append(showImage)
+      $("#gifs-view").prepend(mainDiv);
 
     }
   }); 
@@ -60,45 +60,25 @@ $("#add-gif").on("click", function(event) {
   var show = $("#gif-input").val().trim();
   shows.push(show);
   $("#gif-input").val(''); 
+  $("#fav").append(show); 
   showButtons(); 
 });
-    // Adding a click event listener to all elements with a class of "movie-btn"
-    // $(document).on("click", "#buttons-view", showButtons);
 showButtons(); 
 
 //animate+still gif
 $(".gif").on("click", function() {
+  console.log("test"); 
   var state = $(this).attr("data-state");
   // If the clicked image's state is still, update its src attribute to what its data-animate value is.
   // Then, set the image's data-state to animate
   // Else set src to the data-still value
-  // if (state === "still") {
-  //   $(this).attr("src", $(this).attr("data-animate"));
-  //   $(this).attr("data-state", "animate");
-  // } else {
-  //   $(this).attr("src", $(this).attr("data-still"));
-  //   $(this).attr("data-state", "still");
-  // }
-  for(var i=0; i < response.data.length; i++){
-    if(state != "animate"){
-      $(this).attr("src", response.data[i].images.original.url);
-      $(this).attr("data-state", "animate");
-    }else{
-      $(this).attr("src", response.data[i].images.original_still.url);
-      $(this).attr("data-state", "still");
-    }
+  if (state === "still") {
+    $(this).attr("src", $(this).attr("data-animate"));
+    $(this).attr("data-state", "animate");
+  } else {
+    $(this).attr("src", $(this).attr("data-still"));
+    $(this).attr("data-state", "still");
   }
-
-
-//animate
-// for(var i=0; i < response.data.length; i++){
-//   if(state === "animate"){
-//     console.log("still"); 
-//     $(this).attr("src", response.data[i].images.original_still.url);
-//   }else{//if still 
-//     $(this).attr("src", response.data[i].images.original.url);
-//   }
-// }
 });
 
 }); 
