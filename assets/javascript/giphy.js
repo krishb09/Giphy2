@@ -19,12 +19,25 @@ $("#buttons-view").on("click", ".gif-btn", function(){
       // console.log(response.data[i].title); 
       console.log(response.data[i].images.original.url);
       console.log(response.data[i].images.original_still.url);
+
       
       var imageUrl = response.data[i].images.original.url
+
+      // var stillUrl = response.data[i].images.original_still.url
+
       var showImage = $("<img>"); 
+      var showP = $("<p>"); 
+      showP.text(response.data[i].rating); 
+      showImage.append(showP); 
+      showImage.addClass(".gif"); 
+      showImage.attr("data-state", "animate"); 
       showImage.attr("src", imageUrl); 
       showImage.attr("alt", "show image"); 
       $("#gifs-view").prepend(showImage);
+
+
+
+
 
     }
   }); 
@@ -59,13 +72,33 @@ $(".gif").on("click", function() {
   // If the clicked image's state is still, update its src attribute to what its data-animate value is.
   // Then, set the image's data-state to animate
   // Else set src to the data-still value
-  if (state === "still") {
-    $(this).attr("src", $(this).attr("data-animate"));
-    $(this).attr("data-state", "animate");
-  } else {
-    $(this).attr("src", $(this).attr("data-still"));
-    $(this).attr("data-state", "still");
+  // if (state === "still") {
+  //   $(this).attr("src", $(this).attr("data-animate"));
+  //   $(this).attr("data-state", "animate");
+  // } else {
+  //   $(this).attr("src", $(this).attr("data-still"));
+  //   $(this).attr("data-state", "still");
+  // }
+  for(var i=0; i < response.data.length; i++){
+    if(state != "animate"){
+      $(this).attr("src", response.data[i].images.original.url);
+      $(this).attr("data-state", "animate");
+    }else{
+      $(this).attr("src", response.data[i].images.original_still.url);
+      $(this).attr("data-state", "still");
+    }
   }
+
+
+//animate
+// for(var i=0; i < response.data.length; i++){
+//   if(state === "animate"){
+//     console.log("still"); 
+//     $(this).attr("src", response.data[i].images.original_still.url);
+//   }else{//if still 
+//     $(this).attr("src", response.data[i].images.original.url);
+//   }
+// }
 });
 
 }); 
