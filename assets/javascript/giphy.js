@@ -14,34 +14,57 @@ $("#buttons-view").on("click", ".gif-btn", function(){
     url: queryURL,
     method: "GET"
   }).then(function(response) {
-    for(var i=0; i < response.data.length; i++){
-      console.log(response.data[i]);
+    var results = response.data; 
+    for(var i=0; i < results.length; i++){
+      console.log(results.length);
       // console.log(response.data[i].title); 
       // console.log(response.data[i].images.original.url);
       // console.log(response.data[i].images.original_still.url);
 
       var mainDiv = $("<div class= 'main'>");  
       var showP = $("<p>"); 
-      var rating = response.data[i].rating
+      var rating = results[i].rating
       showP.text("Rating: "+ rating); 
       mainDiv.append(showP); 
 
       var showImage = $("<img>");
-      var imageUrl = response.data[i].images.original.url
-      var stillUrl = response.data[i].images.original_still.url
+      var imageUrl = results[i].images.original.url
+      var stillUrl = results[i].images.original_still.url
 
-      showImage.addClass(".gif"); 
+      var favButton = $("<button>"); 
+      favButton.addClass("fav-btn"); 
+      favButton.text("Add to favorites"); 
+      mainDiv.append(favButton); 
+
+
+      showImage.addClass("gif"); 
       showImage.attr("src", stillUrl); 
       showImage.attr("data-animate", imageUrl); 
       showImage.attr("data-still", stillUrl); 
+      showImage.attr("data-state", "still"); 
+
       showImage.attr("alt", "show image"); 
+      showImage.width("200").height("200"); 
 
       mainDiv.append(showImage)
       $("#gifs-view").prepend(mainDiv);
 
     }
+
+    $(".fav-btn").on("click", function(){
+      console.log("clicked"); 
+      var favImg = $("<img>"); 
+      favImg.attr("src", imageUrl); 
+      $("#fav-gifs").append(favImg); 
+
+      // localStorage.clear();
+      localStorage.setItem("src", imageUrl);
+      $("#fav-gifs").append(localStorage.getItem("img"));
+
+    });
   }); 
 }); 
+$("#fav-gifs").append(localStorage.getItem("img"));
 
 function showButtons(){
   $("#buttons-view").empty(); 
@@ -61,12 +84,12 @@ $("#add-gif").on("click", function(event) {
   shows.push(show);
   $("#gif-input").val(''); 
   $("#fav").append(show); 
-  showButtons(); 
+  showButtons();
 });
 showButtons(); 
 
 //animate+still gif
-$(".gif").on("click", function() {
+$(document).on("click", ".gif", function(){
   console.log("test"); 
   var state = $(this).attr("data-state");
   // If the clicked image's state is still, update its src attribute to what its data-animate value is.
@@ -79,6 +102,7 @@ $(".gif").on("click", function() {
     $(this).attr("src", $(this).attr("data-still"));
     $(this).attr("data-state", "still");
   }
+
 });
 
 }); 
