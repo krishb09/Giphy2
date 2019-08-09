@@ -50,21 +50,48 @@ $("#buttons-view").on("click", ".gif-btn", function(){
       $("#gifs-view").prepend(mainDiv);
 
     }
+console.log($(".main")); 
+    $(".main").on("click", function(event){
+      // console.log(event); 
 
-    $(".fav-btn").on("click", function(){
-      console.log("clicked"); 
-      var favImg = $("<img>"); 
-      favImg.attr("src", imageUrl); 
-      $("#fav-gifs").append(favImg); 
+      if(event.target.className === "fav-btn"){
+        console.log(event); 
 
-      // localStorage.clear();
-      localStorage.setItem("src", imageUrl);
-      $("#fav-gifs").append(localStorage.getItem("img"));
+        // console.log("clicked"); 
+        var favImg = $("<img>"); 
+        console.log(event.currentTarget.children[2].currentSrc); 
+        favImg.attr("src", event.currentTarget.children[2].currentSrc); 
 
-    });
+        $("#fav-gifs").append(favImg);
+
+        // bannerImage = event.currentTarget.children[2].currentSrc; 
+        // imgData = getBase64Image(bannerImage);
+        // localStorage.setItem("imgData", imgData);
+
+        var img = new Image();
+        img.src = 'http://pop.h-cdn.co/assets/16/33/480x264/gallery-1471381857-gif-season-2.gif';
+        localStorage.setItem('test', getBase64Image(img));
+
+        function getBase64Image(img) {
+          var canvas = document.createElement("canvas");
+          canvas.width = img.width;
+          canvas.height = img.height;
+
+        var ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0);
+        var dataURL = canvas.toDataURL("image/gif");
+        return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+}
+        // localStorage.clear();
+        // localStorage.setItem("src", event.currentTarget.children[2].currentSrc);
+        // $("#fav-gifs").append(localStorage.getItem("test", JSON.stringify(img.src)));
+      }
+    }); 
   }); 
 }); 
-$("#fav-gifs").append(localStorage.getItem("img"));
+// $("#fav-gifs").append(localStorage.getItem("src"));
+// $("#fav-gifs").append(localStorage.getItem("test"));
+// $("#fav-gifs").append(localStorage.getItem("test", JSON.stringify(img.src)));
 
 function showButtons(){
   $("#buttons-view").empty(); 
